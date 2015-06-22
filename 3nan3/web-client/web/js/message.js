@@ -64,7 +64,7 @@ function appendMessage(message) {
         escapeCreatedAt +
 	    '</div>' +
 	    '<div class="media-right">' +
-	    '<input type="button" class="btn btn-primary delete-message" value="削除"></input>' +
+	    '<input type="button" class="btn btn-primary delete-message" value="削除" id="' + escapeId + '"></input>' +
 	    '</div>' +
         '</div>' +
         '</td></tr>';
@@ -103,12 +103,11 @@ function postMessage(username, body, success, error) {
  * APIリクエストコメント削除
  */
 function deleteMessage(id, success, error) {
-	var deleteMessageUri = "http://localhost:8888/messages";
+	var deleteMessageUri = "http://localhost:8888/messages/" + id;
 	return $.ajax({
         type: "delete",
         url: deleteMessageUri,
-        data: JSON.stringify({"id":id}), 
-        dataType: "json",
+        dataType: "json"
         })
     .done(function(data) { success() })
     .fail(function() { error() });

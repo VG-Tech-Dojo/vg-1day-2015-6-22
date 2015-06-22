@@ -18,10 +18,9 @@ $(".post-message").bind("click", function() {
 /**
  * 削除
  */
-$(".delete-message").on("click", function() {
-    //var id = $(this).val();
-    //removeMessage(id);
-    console.log("error");
+$(document).on("click", ".delete-message", function() {
+    var id = $(this).attr("id");
+    removeMessage(id);
 });
 
 /**
