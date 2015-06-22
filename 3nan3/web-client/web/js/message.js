@@ -12,11 +12,23 @@ function reloadMessages() {
  */
 function sendMessage(username, body) {
     var success = function() {
+        $(".message-username").val("");
         $(".message-body").val("");
         reloadMessages();
     };
     var error   = function() { console.log("error") };
     postMessage(username, body, success, error);
+}
+
+/**
+ * メッセージの削除
+ */
+function removeMessage(id) {
+    var success = function() {
+        reloadMessages();
+    };
+    var error   = function() { console.log("error") };
+    deleteMessage(id, success, error);
 }
 
 /**
@@ -38,6 +50,7 @@ function appendMessage(message) {
 	var escapeBody = $("<div/>").text(message.body).html();
 	var escapeCreatedAt = $("<div/>").text(message.created_at).html();
 	var escapeIcon = $("<div/>").text(message.icon).html();
+	var escapeId = $("<div/>").text(message.id).html();
 
     var messageHTML = '<tr><td>' +
         '<div class="media message">'　+
@@ -49,6 +62,9 @@ function appendMessage(message) {
         escapeUsername + '</h4>' +
         escapeBody + '<br>' + 
         escapeCreatedAt +
+	    '</div>' +
+	    '<div class="media-right">' +
+	    '<input type="button" class="btn btn-primary delete-message" value="削除"></input>' +
 	    '</div>' +
         '</div>' +
         '</td></tr>';
@@ -77,6 +93,21 @@ function postMessage(username, body, success, error) {
         type: "post",
         url: postMessageUri,
         data: JSON.stringify({"username":username, "body":body}), 
+        dataType: "json",
+        })
+    .done(function(data) { success() })
+    .fail(function() { error() });
+}
+
+/**
+ * APIリクエストコメント削除
+ */
+function deleteMessage(id, success, error) {
+	var deleteMessageUri = "http://localhost:8888/messages";
+	return $.ajax({
+        type: "delete",
+        url: deleteMessageUri,
+        data: JSON.stringify({"id":id}), 
         dataType: "json",
         })
     .done(function(data) { success() })
