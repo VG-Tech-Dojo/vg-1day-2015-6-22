@@ -10,13 +10,13 @@ function reloadMessages() {
 /**
  * メッセージの投稿
  */
-function sendMessage(body) {
+function sendMessage(username, body) {
     var success = function() {
         $(".message-body").val("");
         reloadMessages();
     };
     var error   = function() { console.log("error") };
-    postMessage(body, success, error);
+    postMessage(username, body, success, error);
 }
 
 /**
@@ -34,6 +34,7 @@ function appendMessages(data) {
  * メッセージ挿入
  */
 function appendMessage(message) {
+	var escapeUsername = $("<div/>").text(message.username).html();
 	var escapeBody = $("<div/>").text(message.body).html();
 	var escapeCreatedAt = $("<div/>").text(message.created_at).html();
 	var escapeIcon = $("<div/>").text(message.icon).html();
@@ -45,7 +46,8 @@ function appendMessage(message) {
         '</div>' +
         '<div class="media-body">' +
         '<h4 class="media-heading">' +
-        escapeBody + '</h4>' +
+        escapeUsername + '</h4>' +
+        escapeBody + '<br>' + 
         escapeCreatedAt +
 	    '</div>' +
         '</div>' +
@@ -69,12 +71,12 @@ function getMessages(success, error) {
 /**
  * APIリクエストコメント投稿
  */
-function postMessage(body, success, error) {
+function postMessage(username, body, success, error) {
     var postMessageUri = "http://localhost:8888/messages";
     return $.ajax({
         type: "post",
         url: postMessageUri,
-        data: JSON.stringify({"username":"名前はまだない", "body":body}), 
+        data: JSON.stringify({"username":username, "body":body}), 
         dataType: "json",
         })
     .done(function(data) { success() })
