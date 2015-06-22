@@ -16,6 +16,15 @@ $(".post-message").bind("click", function() {
 });
 
 /**
+ * 削除
+ */
+$(".delete-message").on("click", function() {
+    //var id = $(this).val();
+    //removeMessage(id);
+    console.log("error");
+});
+
+/**
  * 画像選択
  */
 $("#image-form").change(function () {
